@@ -4,9 +4,9 @@ import {
   GetStaticPaths,
 } from 'next';
 import Head from 'next/head';
-import { Article } from '@components/Article';
+import { Article, BlogPostImage } from '@components/Article';
 import type { Post } from './index';
-
+import { BlogTitle } from '../index'
 export default function BlogPost({
   post,
 }: InferGetStaticPropsType<typeof getStaticProps>) {
@@ -17,7 +17,8 @@ export default function BlogPost({
         <title>{title}</title>
         <meta property='og:title' content={title} />
       </Head>
-      <h1>{title}</h1>
+        <BlogPostImage src="/entrance-to-prison.png" />
+      <BlogTitle>{title}</BlogTitle>
       {/* <BlogpostImage src='/harry_and_ginny.jpeg' alt='Two cute bunnies' /> */}
       <p>{body}</p>
     </Article>

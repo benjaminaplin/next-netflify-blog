@@ -1,8 +1,7 @@
 import React from 'react'
-import { Article } from '@components/Article'
-import { useRouter } from "next/router"
 import { BlogTitle, Main, Container } from ".."
 import { InferGetServerSidePropsType } from 'next'
+import Link from 'next/link'
 
 export type Post = {
   userId: number;
@@ -12,16 +11,17 @@ export type Post = {
 }
 
 const Posts = ({ posts }: InferGetServerSidePropsType<typeof getStaticProps>) => {
-
   return (
     <Container>
+      <Link href='/about/me'>
       howdy folks
+      </Link>
+        
     { posts.map( (post: Post) => {
       return ( 
-         <>
-           <BlogTitle>{post.title}</BlogTitle>
-           <Main>{post.body}</Main>
-         </>
+        <Link href="/posts/[id]" key={post.id} as={`/posts/${post.id}`}>
+            <BlogTitle>{post.title}</BlogTitle>
+          </Link>
        )
      })}
     </Container>
@@ -32,9 +32,7 @@ export default Posts
 
 export const getStaticProps = async () => {
   const response = await fetch('https://jsonplaceholder.typicode.com/posts')
-  const jsonResponse = await response.json()
-  console.log("getStaticProps -> jsonResponse", jsonResponse)
-  const posts : Post[] = jsonResponse
+  const posts : Post[] = await response.json()
   return {
     props: {
       posts
