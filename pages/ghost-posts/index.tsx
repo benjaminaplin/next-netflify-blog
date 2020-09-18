@@ -1,4 +1,6 @@
 import ghostApi from '../api/ghost-api'
+import * as GhostContentAPI from '@tryghost/content-api';
+
 import React from 'react'
 import { BlogTitle, Main, Container } from ".."
 import { InferGetServerSidePropsType } from 'next'
@@ -20,7 +22,7 @@ const Posts = ({ posts }: InferGetServerSidePropsType<typeof getStaticProps>) =>
       howdy folks
       </Link>
         
-    { posts.map( (post: GhostPost) => {
+    { posts.map( (post) => {
       return ( 
         <Link href="/ghost-posts/[id]" key={post.id} as={`/ghost-posts/${post.id}`}>
             <BlogTitle>{post.title}</BlogTitle>
@@ -44,7 +46,7 @@ export async function getPosts() {
 }
 
 export const getStaticProps = async () => {
-  const posts: GhostPost[] = await getPosts()
+  const posts = await getPosts()
   return {
     props: {
       posts

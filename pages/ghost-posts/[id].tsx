@@ -3,6 +3,8 @@ import {
   InferGetStaticPropsType,
   GetStaticPaths,
 } from 'next';
+import * as GhostContentAPI from '@tryghost/content-api';
+
 import Head from 'next/head';
 import { Article, BlogPostExerpt, BlogPostImage } from '@components/Article';
 import { BlogTitle } from '../index'
@@ -14,7 +16,7 @@ import Link from 'next/link'
 export default function BlogPost({
   post,
 }: InferGetStaticPropsType<typeof getStaticProps>) {
-  const { title, excerpt } = post;
+  const { title, excerpt, hmtl } = post;
   return (
     <Article>
       <Head>
@@ -27,16 +29,16 @@ export default function BlogPost({
       </Link>
       <BlogTitle>{title}</BlogTitle>
       <BlogPostExerpt>{excerpt}</BlogPostExerpt>
-      <div dangerouslySetInnerHTML={{ __html: post.html }} />
+      <div dangerouslySetInnerHTML={{ __html: html }} />
     </Article>
   );
 }
 
 export const getStaticPaths: GetStaticPaths = async () => {
-  const posts: GhostPost[] = await getPosts();
+  const posts = await getPosts();
   console.log("getStaticPaths:GetStaticPaths -> posts", posts)
 
-  const paths = posts.map((post) => ({
+  const paths = posts.map((post ) => ({
     params: { id: post.id.toString() },
   }));
 
@@ -60,7 +62,7 @@ export async function getSinglePost(postId: string) {
 export const getStaticProps = async (context: GetStaticPropsContext) => {
   const { params } = context;
 
-  const emptyPost: GhostPost = {
+  const emptyPost = {
     title: 'GhostPost not found',
     body: '',
     id: 0,
@@ -75,9 +77,7 @@ export const getStaticProps = async (context: GetStaticPropsContext) => {
     };
   }
 
-  const post: GhostPost = await getSinglePost(`${params.id}`)
-
-  // const post: GhostPost = await res.json();
+  const post = await getSinglePost(`${params.id}`)
 
   return {
     props: {
