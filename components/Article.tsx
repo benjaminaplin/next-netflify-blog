@@ -11,3 +11,8 @@ export const BlogPostImage = styled.img`
   height: auto;
   margin: 20px 0;
 `
+
+export const BlogPostExerpt = styled.div`
+  font-family: italic;
+  color: tomato;
+`
