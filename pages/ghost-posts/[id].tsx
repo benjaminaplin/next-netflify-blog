@@ -16,7 +16,7 @@ import Link from 'next/link'
 export default function BlogPost({
   post,
 }: InferGetStaticPropsType<typeof getStaticProps>) {
-  const { title, excerpt, hmtl } = post;
+  const { title, excerpt, html } = post;
   return (
     <Article>
       <Head>
