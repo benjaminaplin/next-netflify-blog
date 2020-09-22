@@ -23,7 +23,7 @@ type GhostPostProps = { post: GhostPost }
 export default function BlogPost({
   post,
 }: GhostPostProps) {
-  const { title, body } = post;
+  const { title, body, html } = post;
   return (
     <Article>
       <Head>
@@ -36,7 +36,7 @@ export default function BlogPost({
       </Link>
       <BlogTitle>{title}</BlogTitle>
       <BlogPostExerpt>{body}</BlogPostExerpt>
-      {/* <div dangerouslySetInnerHTML={{ __html: html }} /> */}
+      <div dangerouslySetInnerHTML={{ __html: html }} />
     </Article>
   );
 }
