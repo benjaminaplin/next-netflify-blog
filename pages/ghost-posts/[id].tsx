@@ -10,13 +10,16 @@ import { BlogTitle } from '../index'
 import ghostApi from '../api/ghost-api'
 import { getPosts } from './index'
 import Link from 'next/link'
+import { GhostAPI, PostOrPage } from '@tryghost/content-api';
 
 type GhostPost = {
   title: string;
   body: string;
   id: string;
 }
-type GhostPostProps = {post: GhostPost}
+
+type GhostPostProps = { post: GhostPost }
+
 export default function BlogPost({
   post,
 }: GhostPostProps) {
@@ -39,7 +42,7 @@ export default function BlogPost({
 }
 
 export const getStaticPaths: GetStaticPaths = async () => {
-  const posts: GhostPost[]= await getPosts();
+  const posts: PostOrPage[]= await getPosts();
   console.log("getStaticPaths:GetStaticPaths -> posts", posts)
 
   const paths = posts.map((post: any ) => ({
@@ -52,14 +55,14 @@ export const getStaticPaths: GetStaticPaths = async () => {
   };
 };
 
-export async function getSinglePost(postId: string) {
+export async function getSinglePost(postId: string): Promise<PostOrPage> {
   return await ghostApi.posts
     .read({
       id: postId
     })
-    .catch((err: unknown) => {
-      console.error(err);
-    });
+    // .catch((err: unknown) => {
+    //   console.error(err);
+    // });
 }
 
 
@@ -81,7 +84,7 @@ export const getStaticProps = async (context: GetStaticPropsContext) => {
     };
   }
 
-  const post: GhostPost = await getSinglePost(`${params.id}`)
+  const post: PostOrPage = await getSinglePost(`${params.id}`)
 
   return {
     props: {

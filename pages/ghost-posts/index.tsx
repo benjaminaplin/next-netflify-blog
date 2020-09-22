@@ -2,13 +2,10 @@ import React from 'react'
 import ghostApi from '../api/ghost-api'
 import { BlogTitle, Main, Container } from ".."
 import { InferGetServerSidePropsType } from 'next'
+import { GhostAPI, PostOrPage } from '@tryghost/content-api';
 import Link from 'next/link'
-type GhostPost = {
-  title: string;
-  body: string;
-  id: string;
-}
-type GhostPostProps = {posts: GhostPost[]}
+
+type GhostPostProps = {posts: PostOrPage[]}
 const Posts = ({ posts }: GhostPostProps)  => {
   return (
     <Container>
@@ -29,18 +26,18 @@ const Posts = ({ posts }: GhostPostProps)  => {
 
 export default Posts
 
-export async function getPosts() {
+export async function getPosts(): Promise<PostOrPage[]> {
   return await ghostApi.posts
     .browse({
       limit: "all"
     })
-    .catch((err: unknown) => {
-      console.error(err);
-    });
+    // .catch((err: unknown) => {
+    //   console.error(err);
+    // });
 }
 
 export const getStaticProps = async () => {
-  const posts: GhostPost[] = await getPosts()
+  const posts: PostOrPage[] = await getPosts()
   return {
     props: { posts }
   }
