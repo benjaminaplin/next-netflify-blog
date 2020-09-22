@@ -12,18 +12,18 @@ import { getPosts } from './index'
 import Link from 'next/link'
 import { GhostAPI, PostOrPage } from '@tryghost/content-api';
 
-type GhostPost = {
-  title: string;
-  body: string;
-  id: string;
-}
+// type GhostPost = {
+//   title: string;
+//   body: string;
+//   id: string;
+// }
 
-type GhostPostProps = { post: GhostPost }
+type GhostPostProps = { post: PostOrPage }
 
 export default function BlogPost({
   post,
 }: GhostPostProps) {
-  const { title, body, html } = post;
+  const { title, html } = post;
   return (
     <Article>
       <Head>
@@ -35,8 +35,8 @@ export default function BlogPost({
         back to ghost posts
       </Link>
       <BlogTitle>{title}</BlogTitle>
-      <BlogPostExerpt>{body}</BlogPostExerpt>
-      <div dangerouslySetInnerHTML={{ __html: html }} />
+      {/* @ts-ignore */}
+      <BlogPostExerpt><div dangerouslySetInnerHTML={{ __html: html}} /></BlogPostExerpt>
     </Article>
   );
 }
