@@ -1,5 +1,3 @@
-import { GhostPost } from "pages/ghost-posts";
-
 import GhostContentAPI from "@tryghost/content-api";
 
 const ghostApi = new GhostContentAPI({
