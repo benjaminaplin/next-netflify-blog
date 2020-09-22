@@ -1,21 +1,15 @@
-import ghostApi from '../api/ghost-api'
-import * as GhostContentAPI from '@tryghost/content-api';
-
 import React from 'react'
+import ghostApi from '../api/ghost-api'
 import { BlogTitle, Main, Container } from ".."
 import { InferGetServerSidePropsType } from 'next'
 import Link from 'next/link'
-
-export type GhostPost = {
-  userId: number;
-  id: number;
+type GhostPost = {
   title: string;
   body: string;
-  html: string;
-  excerpt: string;
+  id: string;
 }
-
-const Posts = ({ posts }: InferGetServerSidePropsType<typeof getStaticProps>) => {
+type GhostPostProps = {posts: GhostPost[]}
+const Posts = ({ posts }: GhostPostProps)  => {
   return (
     <Container>
       <Link href='/about/me'>
@@ -46,10 +40,8 @@ export async function getPosts() {
 }
 
 export const getStaticProps = async () => {
-  const posts = await getPosts()
+  const posts: GhostPost[] = await getPosts()
   return {
-    props: {
-      posts
-    }
+    props: { posts }
   }
 }
